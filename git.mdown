@@ -1,0 +1,22 @@
+== Git Cheat Sheet ==
+
+=== Revision Selection ===
+
+Specify a revision by: full/partial SHA-1, branch name, tag name, caret parent, tilde spec, blob spec, relative spec, range.
+
+==== Caret parent ====
+
+Second parent of default:
+
+> `default^2`
+
+<pre>
+
+</pre>
+
+== Sources ==
+
+Mostly from Scott Chacon's git talks at Scotland on Rails '09 and Railsconf '09:
+
+* http://en.oreilly.com/rails2009/public/schedule/detail/7367
+* http://www.slideshare.net/railsconf/smacking-git-around-advanced-git-tricks
