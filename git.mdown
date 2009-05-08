@@ -11,8 +11,49 @@ Second parent of default:
 > `default^2`
 
 <pre>
-
+o--x
+    \
+z----y <- master
 </pre>
+
+master^ : z
+master^2: x
+
+== Submodules Theory ==
+
+> `git submodule add <repo> <path>`
+
+* Clones <repo> to <path>, checks out <repo>'s master.
+* Adds the clone path to .gitmodules and adds .gitmodules to the containing project's index.
+* Adds the submodule's current commit ID (i.e. the SHA-1 of HEAD) to the index (view with `git submodule status`).
+
+>	`[/tmp/GitTest(master)]$ git submodule status`
+>	`-43cc0d5e8f0c6f6c20953275bc29b2272ef69b97 FlickrKit`
+>	`[/tmp/GitTest(master)]$ cd FlickrKit/ && git log -n 1 --pretty=oneline`
+>	`43cc0d5e8f0c6f6c20953275bc29b2272ef69b97`
+
+* The superproject's index contains a SHA-1 for the submodule (`git ls-files --stage`), which is set from the sub's HEAD when the submodule is added.
+
+>	`git submodule status`
+
+* Shows the SHA-1 of the currently checked out commit in each submodule.
+* Has a prefix of '-' if submodule is not initialised.
+* Has a + prefix if the current SHA doesn't match the SHA that the superproject expects (i.e. there have been commits in the submodule)
+
+
+Git knows where your subproject is at by:
+
+1. The .gitmodules file tells git where the origin repo is, and where it should be checked out into the superproject.
+2. The superproject's index holds the SHA-1 of the revision of the submodule that you want to have checked out.
+
+You advance the checkout of your submodule by:
+
+1. Adding the sub's path to your superproject (`git add SubModuleDir`)
+2. Committing.
+
+Git knows that your sub is dirty by:
+
+1. Comparing the SHA-1 in the superproject index with the contents of `SubModuleDir/.git/refs/heads/master`.
 
 == Sources ==
 
