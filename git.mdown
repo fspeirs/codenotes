@@ -27,10 +27,10 @@ master^2: x
 * Adds the clone path to .gitmodules and adds .gitmodules to the containing project's index.
 * Adds the submodule's current commit ID (i.e. the SHA-1 of HEAD) to the index (view with `git submodule status`).
 
->`[/tmp/GitTest(master)]$ git submodule status`
->`-43cc0d5e8f0c6f6c20953275bc29b2272ef69b97 FlickrKit`
->`[/tmp/GitTest(master)]$ cd FlickrKit/ && git log -n 1 --pretty=oneline`
->`43cc0d5e8f0c6f6c20953275bc29b2272ef69b97`
+>	`[/tmp/GitTest(master)]$ git submodule status`  
+>	`-43cc0d5e8f0c6f6c20953275bc29b2272ef69b97 FlickrKit`  
+>	`[/tmp/GitTest(master)]$ cd FlickrKit/ && git log -n 1 --pretty=oneline`  
+>	`43cc0d5e8f0c6f6c20953275bc29b2272ef69b97`  
 
 * The superproject's index contains a SHA-1 for the submodule (`git ls-files --stage`), which is set from the sub's HEAD when the submodule is added.
 
