@@ -1,10 +1,11 @@
-== Git Cheat Sheet ==
+Git Cheat Sheet
+===============
 
-=== Revision Selection ===
+## Revision Selection ##
 
 Specify a revision by: full/partial SHA-1, branch name, tag name, caret parent, tilde spec, blob spec, relative spec, range.
 
-==== Caret parent ====
+#### Caret parent ####
 
 Second parent of default:
 
@@ -19,11 +20,13 @@ z----y <- master
 master^ : z
 master^2: x
 
-== Submodules Theory ==
+## Submodules Theory ##
 
 > `git submodule add <repo> <path>`
 
-* Clones <repo> to <path>, checks out <repo>'s master.
+Does the following:
+
+* Clones _repo_ to _path_, checks out _repo_'s master.
 * Adds the clone path to .gitmodules and adds .gitmodules to the containing project's index.
 * Adds the submodule's current commit ID (i.e. the SHA-1 of HEAD) to the index (view with `git submodule status`).
 
@@ -32,7 +35,7 @@ master^2: x
 >	`[/tmp/GitTest(master)]$ cd FlickrKit/ && git log -n 1 --pretty=oneline`  
 >	`43cc0d5e8f0c6f6c20953275bc29b2272ef69b97`  
 
-* The superproject's index contains a SHA-1 for the submodule (`git ls-files --stage`), which is set from the sub's HEAD when the submodule is added.
+The superproject's index contains a SHA-1 for the submodule (`git ls-files --stage`), which is set from the sub's HEAD when the submodule is added.
 
 >	`git submodule status`
 
@@ -51,11 +54,9 @@ You advance the checkout of your submodule by:
 1. Adding the sub's path to your superproject (`git add SubModuleDir`)
 2. Committing.
 
-Git knows that your sub is dirty by:
+Git knows that your sub is dirty by comparing the SHA-1 in the superproject index with the contents of `SubModuleDir/.git/refs/heads/master`.
 
-1. Comparing the SHA-1 in the superproject index with the contents of `SubModuleDir/.git/refs/heads/master`.
-
-== Sources ==
+#### Sources ####
 
 Mostly from Scott Chacon's git talks at Scotland on Rails '09 and Railsconf '09:
 
