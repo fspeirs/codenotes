@@ -1,0 +1,80 @@
+Objective-C Garbage Collection
+==============================
+
+Weak references: don't keep an object alive.
+
+Roots: globals, locals on stack, external references.
+
+Everything reachable is marked. Everything else is garbage. Weak references to 'garbage' objects in 'live' objects are zeroed out.
+
+Finalize is called in a nondeterministic order on garbage objects.
+
+Write barriers: compiler substitutes object_assign_ivar() for direct ivar assignment.
+
+Weak references:
+
+* Pointers to __weak objects are zeroed before the object is finalised.
+* Useful for keeping a while-in-use singleton (it will be finalized when no object has a __strong pointer to it).
+
+	
+Strong references:
+
+* Pointers to objects are implicitly strong references.
+* Should use it for C ptrs to anything GC allocated.
+* Stack-based local vars are considered __strong.
+* Instance variables can be marked __strong.
+
+Properties:
+
+* Use __strong and __weak to indicate GC.
+* Using @property(assign) under GC is a strong reference and is nonretained under non-GC.
+* -Wassign-intercept: issues a warning for assignments.
+
+GC Design Strategies
+====================
+
+Big Five:
+
+* retain, release, retainCount, autorelease and dealloc are all short circuited in the runtime.
+* CFRetain() and CFRelease() are still honoured.  A CFRetain()'ed object will disable the collector.
+* Can't store GC pointers into void * unless the void * is __strong.
+* Backpointers and cycles are OK - can use zeroing weak storage.
+* Finalize is evil.
+
+Finalize
+--------
+
+* Called in arbitrary order. No hierarchy, as in non-GC. Children of your subgraph might be gone before your finalize is called.
+* Never ask another object to do anything meaningful.
+* Don't use it to "finish work".
+* Design in the finishing up in your own API.
+* VERY different from dealloc.
+
+Misc
+----
+
+* NSNotificationCenter will zero out its references, so no need to remove yourself.
+* CFRelease() doesn't make your Core Foundation object go away - it just makes it collectible - if appropriate.  CFCMakeCollcetable() is a synonym for CFRelease(), but looks better.
+* CFRetain() and CFRelease() are synonyms for -[NSGarbageCollector {disable,enable}CollectorForPointer]. This is how you GC `void *` pointers.
+* If you malloc(), you can use NSAllocateCollectible() to malloc GCable memory.
+* Hints: -[NSGarbageCollector collectIfNeeded].
+
+Collections API
+---------------
+
+* NSArray, NSSet and NSDictionary don't zero out because GC'ing would break -count in arrays, for example.
+* Solution:
+	* NSMapTable (like NSMutableDictionary)
+	* NSHashTable (like NSMutableSet)
+	
+* NSMapTable ensures that if the key or value gets zeroed, the other disappears.
+* There are options at creation-time for this behaviour to control key or value zeroing.
+
+Core Foundation
+---------------
+
+* All CFTypeRef objects are created collector-disabled.
+* Anywhere you CFCreate...() you have to:
+	* CFRelease() or CFMakeCollectable()
+	* A very few CF objects can't be called with CFMakeCollectable() and have to be CFRelease()'ed in -finalaize (e.g. CGBitmapContextRef).
+	
