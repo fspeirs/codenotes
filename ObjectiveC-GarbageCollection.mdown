@@ -77,4 +77,18 @@ Core Foundation
 * Anywhere you CFCreate...() you have to:
 	* CFRelease() or CFMakeCollectable()
 	* A very few CF objects can't be called with CFMakeCollectable() and have to be CFRelease()'ed in -finalaize (e.g. CGBitmapContextRef).
+* The last CFRelease() just makes it _eligible_ for collection. Doesn't collect immediately.
 	
+Debugging
+---------
+
+* Can break on:
+	* auto_zone_resurrection_error: storing a dead pointer in a live collection.
+	* Storing non-GC object into GC storage.
+	* Refcount underflow
+	* Exceptions in -finalize
+
+GC Leaks
+--------
+
+Under GC, a leak is defined as an 'unintentionally rooted subgraph'. Usually arising from a global reference to a cycle.
