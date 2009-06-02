@@ -13,20 +13,20 @@ Write barriers: compiler substitutes object_assign_ivar() for direct ivar assign
 
 Weak references:
 
-* Pointers to __weak objects are zeroed before the object is finalised.
-* Useful for keeping a while-in-use singleton (it will be finalized when no object has a __strong pointer to it).
+* Pointers to `__weak` objects are zeroed before the object is finalised.
+* Useful for keeping a while-in-use singleton (it will be finalized when no object has a `__strong` pointer to it).
 
 	
 Strong references:
 
 * Pointers to objects are implicitly strong references.
 * Should use it for C ptrs to anything GC allocated.
-* Stack-based local vars are considered __strong.
-* Instance variables can be marked __strong.
+* Stack-based local vars are considered `__strong`.
+* Instance variables can be marked `__strong`.
 
 Properties:
 
-* Use __strong and __weak to indicate GC.
+* Use `__strong` and `__weak` to indicate GC.
 * Using @property(assign) under GC is a strong reference and is nonretained under non-GC.
 * -Wassign-intercept: issues a warning for assignments.
 
@@ -37,7 +37,7 @@ Big Five:
 
 * retain, release, retainCount, autorelease and dealloc are all short circuited in the runtime.
 * CFRetain() and CFRelease() are still honoured.  A CFRetain()'ed object will disable the collector.
-* Can't store GC pointers into void * unless the void * is __strong.
+* Can't store GC pointers into `void *` unless the `void *` is `__strong`.
 * Backpointers and cycles are OK - can use zeroing weak storage.
 * Finalize is evil.
 
