@@ -77,6 +77,7 @@ Parameter lists are sometimes externalised versions of large numbers of ivars fr
 
 ### Aphorisms ###
 
+* "Whenever we feel the need to comment something, we write a method instead."
 * "A block of code with a comment that tells you what it is doing can be replaced by a method whose name is based on the comment."
 * "Even a single line is worth extracting if it needs explanation."
 * "With objects, you don't pass in everything the method needs; instead you pass in enough so that the method can get to everything it needs."
