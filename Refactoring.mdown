@@ -28,5 +28,55 @@ Martin Fowler
 * Data Class
 * Refused Bequest
 
+#### Duplicated Code ####
+
+Code can be duplicated in different ways.
+
+* In two places in the one class: _Extract Method (110)_.
+* In sibling classes: _Extract Method (110)_ then _Pull Up Method (322)_.
+
+If the code is similar but not identical, use _Extract Method_ to factor out the identical parts, then _Form Template Method (345)_.
+
+Methods may be similar but use different algorithms (which is duplicated _intent_, if not actually duplicated _code_).
+
+If code is duplicated in two unrelated classes, you can use _Extract Class (149)_ and use that new class across the code.
+
+#### Long Method ####
+
+Fowler advocates aggressive decomposition: "Even a single line is worth extracting if it needs explanation". There are many strategies:
+
+* _Extract Method_ covers 99% of the cases.
+* Large numbers of temps can be reduced with _Replace Temp with Query (120)_.
+* Long parameter lists can be controlled with _Introduce Parameter Object (295)_ and _Preserve Whole Object (288)_.
+* Nuclear weapon: _Replace Method with Method Object (135)_.
+
+Comments signal semantic 'distance'.
+
+You can also decompose conditionals using _Decompose Conditional (238)_. Loops and their bodies can usually be pulled into a separate method.
+
+#### Large Class ####
+
+A class trying to do too much often manifests as too many ivars.
+
+The core tactics are:
+
+* _Extract Class (149)_
+* _Extract Subclass (330)_
+
+Another tactic is to figure out how clients are using the class, then _Extract Interface (341)_. The idea being that over-large classes are probably used in more than one way and they may be sufficiently distinct that two separate interfaces can be identified.
+
+#### Long Parameter List ####
+
+Long param lists are bad because you break the API every time you need more data.
+
+* Use the _Replace Parameter with Method (292)_ refactoring when you can get the data in one parameter by making a request of an object you already know about (which may be self).
+
+Parameter lists are sometimes externalised versions of large numbers of ivars from one object. In such a case, pass the whole object and interrogate its API directly.  Alternatively, use a parameter object: _Introduce Parameter Object (295)_.
+
 ### List of Refactorings ###
 
+### Aphorisms ###
+
+* "A block of code with a comment that tells you what it is doing can be replaced by a method whose name is based on the comment."
+* "Even a single line is worth extracting if it needs explanation."
+* "With objects, you don't pass in everything the method needs; instead you pass in enough so that the method can get to everything it needs."
