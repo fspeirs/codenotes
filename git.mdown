@@ -56,6 +56,15 @@ You advance the checkout of your submodule by:
 
 Git knows that your sub is dirty by comparing the SHA-1 in the superproject index with the contents of `SubModuleDir/.git/refs/heads/master`.
 
+### Cloning a Project using Submodules ###
+
+When you clone a project that uses submodules (and it's far from obvious how you would know if you have!), you have to run:
+
+>	`git submodule init`
+>	`git submodule update`
+
+The first command registers the submodules, the second actually checks out the submodule at the specified revision.
+
 #### Sources ####
 
 Mostly from Scott Chacon's git talks at Scotland on Rails '09 and Railsconf '09:
