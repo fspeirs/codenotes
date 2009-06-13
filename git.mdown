@@ -65,6 +65,19 @@ When you clone a project that uses submodules (and it's far from obvious how you
 
 The first command registers the submodules, the second actually checks out the submodule at the specified revision.
 
+## Remote Tracking Branches ##
+
+When the upstream has a new branch that you want to work on locally:
+
+>	`git branch -r`
+
+...will show you what the origin has that you don't.  If you want to work on one of these branches, you make a local branch:
+
+>	`git branch --track MyBranch origin/TheFeature`
+
+This gives you a branch called "MyBranch" which tracks "origin/TheFeature".
+
+
 #### Sources ####
 
 Mostly from Scott Chacon's git talks at Scotland on Rails '09 and Railsconf '09:
