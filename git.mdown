@@ -5,20 +5,60 @@ Git Cheat Sheet
 
 Specify a revision by: full/partial SHA-1, branch name, tag name, caret parent, tilde spec, blob spec, relative spec, range.
 
-#### Caret parent ####
+### Caret parent ###
 
 Second parent of default:
 
 > `default^2`
 
-<pre>
 o--x
     \
 z----y <- master
-</pre>
+
 
 master^ : z
 master^2: x
+
+## Branch Theory ##
+
+In git, branches exist really more by definition than by structure. Every commit knows it parent or parents. Heads point to specific revisions. Branches exist by working up the backpointers from Heads.
+
+Scott Chacon: "A branch is a lightweight movable pointer to a commit".
+
+Creating and deleting branches is in the manual. Make lots of them.
+
+### Inspecting Differences Between Branches ###
+
+There are two 'dot operators': double and triple dot.
+
+#### Double Dot ####
+
+>	`ce0e4..e4272`
+>	`[old]..[new]`
+
+... "every commit reachable by e4272 that is not reachable by ce0e4".
+
+>	`[old]..`
+
+... assumes HEAD of the current branch as the RHS operand. Also works for `..[new]`:
+
+>	`..origin/master`
+
+... means "what does origin master have that I don't?"
+
+#### Triple Dot ####
+
+>	`c6...c4`
+
+... finds the first common ancestor of c6 and c4, then returns the revisions between _that_ commit and c4.
+
+## Log Tricks ##
+
+Omitting branches from log:
+
+>	`git log 08cb1 98ea2 ^c0890`
+
+... means "show me everything reachable from 08cb1 and 98ea2, but not from c0890".
 
 ## Submodules Theory ##
 
@@ -64,6 +104,19 @@ When you clone a project that uses submodules (and it's far from obvious how you
 >	`git submodule update`
 
 The first command registers the submodules, the second actually checks out the submodule at the specified revision.
+
+### Branching Using Submodules ###
+
+When you have two branches of your project that use different SHA-1s of the same submodule, you have to run `git submodule update` after switching branches.  The result of this is somewhat confusing at first glance.  What you will see is that:
+
+* The submodule is switched to the SHA-1 that the superproject is locked to.
+* The submodule's head is detached.
+
+The detached head is initially confusing, but remember the theory of submodules: you're locking to _a specific SHA-1_ in a project. You're not locking to _a specific point on a named branch_. Git submodules knows essentially nothing about branches. All it knows about are commits.  You can get to commits by moving the submodule to the HEAD of a named branch, then locking to the current state, but remember that the superproject only knows:
+
+* The submodule clone URL
+* Where to put it in your superproject
+* Which SHA-1 to update to when you execute `git submodule update`.
 
 ## Remote Tracking Branches ##
 
